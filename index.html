@@ -1,0 +1,701 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font:
+          14px -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: #fff;
+        color: #000;
+      }
+      img {
+        max-width: 100%;
+      }
+      [hidden]:not([hidden='until-found' i]) {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <title>Mundo SENAI</title>
+    <meta name="claude:viewport-fit-sides" content="cover" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600&family=Unbounded:wght@500;700;800&display=swap"
+    />
+    <style>
+      /* Layout: portal em órbita. Hero com logo e título grande sobre rede animada; abaixo, uma faixa por categoria com cards em grade. */
+      :root {
+        --void: #050a1c;
+        --panel: #0b1331;
+        --edge: #22305f;
+        --ink: #e9f0ff;
+        --mute: #8fa0cf;
+        --blue: #2f7bff;
+        --ion: #38e1ff;
+        --flare: #ff5a36;
+        --font-display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+        --font-body: 'Chakra Petch', 'Segoe UI', system-ui, sans-serif;
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        background: var(--void);
+      }
+      body {
+        margin: 0;
+        background: var(--void);
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: 16px;
+        line-height: 1.5;
+        padding-block: 0 56px;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        overflow-x: hidden;
+      }
+      #net {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+      .glow {
+        position: absolute;
+        left: 50%;
+        top: -220px;
+        width: min(900px, 140vw);
+        aspect-ratio: 1;
+        transform: translateX(-50%);
+        z-index: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          closest-side,
+          rgba(47, 123, 255, 0.34),
+          rgba(56, 225, 255, 0.08) 55%,
+          transparent 72%
+        );
+      }
+      .wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 1120px;
+        margin: 0 auto;
+      }
+
+      /* topo */
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding-block: 24px;
+        flex-wrap: wrap;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--ink);
+      }
+      .logo svg {
+        width: 44px;
+        height: 44px;
+        flex: none;
+      }
+      .logo b {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 15px;
+        letter-spacing: 0.14em;
+      }
+      .logo small {
+        display: block;
+        font-size: 11px;
+        letter-spacing: 0.28em;
+        color: var(--ion);
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+      .pill {
+        font-size: 12px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--ion);
+        border: 1px solid var(--edge);
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(11, 19, 49, 0.7);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .pill i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--flare);
+        box-shadow: 0 0 12px var(--flare);
+        animation: pulse 1.8s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        50% {
+          opacity: 0.35;
+        }
+      }
+
+      /* hero */
+      .hero {
+        padding-block: 56px 72px;
+      }
+      .eyebrow {
+        font-size: 13px;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: var(--ion);
+        font-weight: 500;
+        margin: 0 0 20px;
+      }
+      h1 {
+        font-family: var(--font-display);
+        font-weight: 800;
+        margin: 0;
+        font-size: clamp(2.6rem, 9.5vw, 6.6rem);
+        line-height: 0.98;
+        letter-spacing: -0.02em;
+        text-wrap: balance;
+      }
+      h1 span {
+        background: linear-gradient(
+          100deg,
+          var(--ion) 0%,
+          var(--blue) 55%,
+          #8f7bff 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .lede {
+        max-width: 54ch;
+        margin: 28px 0 0;
+        color: var(--mute);
+        font-size: clamp(1.02rem, 2.4vw, 1.25rem);
+      }
+      .stats {
+        display: flex;
+        gap: 12px 36px;
+        flex-wrap: wrap;
+        margin-top: 36px;
+      }
+      .stats div {
+        font-size: 12px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--mute);
+      }
+      .stats strong {
+        display: block;
+        font-family: var(--font-display);
+        font-size: 26px;
+        letter-spacing: 0;
+        color: var(--ink);
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* categorias */
+      .zone {
+        margin-top: 56px;
+      }
+      .zone-head {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      .zone-head h2 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(1.05rem, 3.4vw, 1.5rem);
+        margin: 0;
+        letter-spacing: 0.02em;
+        text-wrap: balance;
+      }
+      .zone-head .rule {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--edge), transparent);
+        min-width: 24px;
+      }
+      .zone-head .count {
+        font-size: 12px;
+        letter-spacing: 0.2em;
+        color: var(--ion);
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        --mx: 50%;
+        --my: 50%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 40px;
+        min-height: 168px;
+        min-width: 0;
+        padding: 22px;
+        text-decoration: none;
+        color: var(--ink);
+        background: linear-gradient(
+          160deg,
+          rgba(18, 30, 70, 0.85),
+          rgba(9, 15, 38, 0.9)
+        );
+        border: 1px solid var(--edge);
+        border-radius: 6px;
+        clip-path: polygon(
+          0 0,
+          calc(100% - 22px) 0,
+          100% 22px,
+          100% 100%,
+          0 100%
+        );
+        transition:
+          transform 0.25s ease,
+          border-color 0.25s ease,
+          box-shadow 0.25s ease;
+        isolation: isolate;
+        overflow: hidden;
+      }
+      .card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+        background: radial-gradient(
+          260px circle at var(--mx) var(--my),
+          rgba(56, 225, 255, 0.28),
+          rgba(47, 123, 255, 0.12) 45%,
+          transparent 70%
+        );
+      }
+      .card:hover,
+      .card:focus-visible {
+        transform: translateY(-6px);
+        border-color: var(--ion);
+        box-shadow:
+          0 18px 40px -18px rgba(56, 225, 255, 0.55),
+          0 0 0 1px rgba(56, 225, 255, 0.35);
+      }
+      .card:hover::before,
+      .card:focus-visible::before {
+        opacity: 1;
+      }
+      .card:focus-visible {
+        outline: 2px solid var(--flare);
+        outline-offset: 3px;
+      }
+      .card .id {
+        font-size: 12px;
+        letter-spacing: 0.26em;
+        color: var(--mute);
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .card .id em {
+        font-style: normal;
+        color: var(--flare);
+      }
+      .card h3 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+        line-height: 1.2;
+        margin: 0;
+        overflow-wrap: anywhere;
+        text-wrap: balance;
+      }
+      .card .meta {
+        display: block;
+        margin-top: 8px;
+        font-family: var(--font-body);
+        font-weight: 400;
+        font-size: 13px;
+        letter-spacing: 0.04em;
+        color: var(--mute);
+      }
+      .card .go {
+        font-size: 12px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--ion);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        opacity: 0.55;
+        transform: translateX(-6px);
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease;
+      }
+      .card .go::after {
+        content: '';
+        width: 26px;
+        height: 1px;
+        background: var(--ion);
+        transition: width 0.25s ease;
+      }
+      .card:hover .go,
+      .card:focus-visible .go {
+        opacity: 1;
+        transform: none;
+      }
+      .card:hover .go::after,
+      .card:focus-visible .go::after {
+        width: 48px;
+      }
+
+      .foot {
+        margin-top: 72px;
+        padding-top: 24px;
+        border-top: 1px solid var(--edge);
+        color: var(--mute);
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+      @media (hover: none) {
+        .card .go {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+
+    <canvas id="net" aria-hidden="true"></canvas>
+    <div class="glow" aria-hidden="true"></div>
+
+    <div class="wrap">
+      <header class="top">
+        <!-- Para usar a logo oficial: troque este <svg> por <img src="data:image/png;base64,..." alt="Mundo SENAI" width="44" height="44"> -->
+        <a class="logo" href="#top" aria-label="Mundo SENAI">
+          <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="21" stroke="#38e1ff" stroke-width="2" />
+            <ellipse
+              cx="24"
+              cy="24"
+              rx="21"
+              ry="8"
+              stroke="#2f7bff"
+              stroke-width="2"
+              transform="rotate(-24 24 24)"
+            />
+            <ellipse
+              cx="24"
+              cy="24"
+              rx="9"
+              ry="21"
+              stroke="#2f7bff"
+              stroke-width="2"
+              opacity=".6"
+            />
+            <circle cx="40" cy="14" r="3.2" fill="#ff5a36" />
+          </svg>
+          <span><b>MUNDO SENAI</b><small>Mostra de projetos</small></span>
+        </a>
+        <span class="pill"><i></i>Projetos dos alunos</span>
+      </header>
+
+      <section class="hero" id="top">
+        <p class="eyebrow">Tecnologia criada por quem está aprendendo</p>
+        <h1>Entre no <span>Mundo SENAI</span></h1>
+        <p class="lede">
+          Jogos, sistemas, páginas e circuitos feitos pelos nossos alunos.
+          Escolha um projeto, clique e teste na hora.
+        </p>
+        <div class="stats">
+          <div><strong id="n-proj">0</strong>projetos</div>
+          <div><strong id="n-cat">0</strong>áreas</div>
+        </div>
+      </section>
+
+      <main id="zones"></main>
+
+      <footer class="foot">
+        <span>Mundo SENAI · Projetos apresentados pelos alunos</span>
+        <span>Toque ou clique em um card para abrir</span>
+      </footer>
+    </div>
+
+    <script>
+      /* Para trocar um link, edite o campo url do projeto correspondente. */
+      var ZONES = [
+        {
+          name: 'Sistemas',
+          projects: [
+            {
+              id: 1,
+              name: 'PlayShare',
+              meta: 'Multimídia/DESI · Sala 303/304',
+              url: '#',
+            },
+            { id: 2, name: 'MentorIA', url: '#' },
+          ],
+        },
+        {
+          name: 'Terminal e Lógica',
+          projects: [
+            { id: 7, name: 'Entregador de Pizza', meta: 'Terminal', url: '#' },
+            { id: 3, name: 'Acerte a Palavra', url: '#' },
+            { id: 4, name: 'Explode a Bomba', url: '#' },
+            { id: 5, name: 'Among US', url: '#' },
+          ],
+        },
+        {
+          name: 'Landing Pages',
+          projects: [
+            {
+              id: 6,
+              name: 'NutriCampo',
+              meta: 'T MULT 2024/2 M4',
+              url: 'https://pedromelo09.github.io/nutricampo/',
+            },
+            {
+              id: 12,
+              name: 'NutriCampo',
+              meta: 'T MULT 2024/2 M4',
+              url: 'https://pedromelo09.github.io/nutricampo/',
+            },
+          ],
+        },
+        {
+          name: 'Embarcado',
+          projects: [
+            {
+              id: 8,
+              name: 'Semáforo Inteligente',
+              meta: 'Turma: T TIOT 2026/2 M1',
+              url: 'https://www.tinkercad.com/things/hdDQDXm6ghW-semaforo-inteligente-baseado-em-fsm',
+            },
+            {
+              id: 9,
+              name: 'Varredura de Leds',
+              meta: 'Turma: T TIOT 2026/2 M1',
+              url: 'https://www.tinkercad.com/things/edAmRMIhvCV-varreduramatrizledscpp',
+            },
+            {
+              id: 10,
+              name: 'Monitoramento Multinível',
+              meta: 'Turma: T TIOT 2026/2 M1',
+              url: 'https://www.tinkercad.com/things/2uh3gqkNwW6-monitoramentomultinivelcpp',
+            },
+            {
+              id: 11,
+              name: 'LDR + Buzzer',
+              meta: 'Turma: T TIOT 2026/2 M1',
+              url: 'https://www.tinkercad.com/things/2antw9vmqMk-avaliacao-pratica-01',
+            },
+          ],
+        },
+      ];
+
+      (function () {
+        var root = document.getElementById('zones'),
+          total = 0;
+        function pad(n) {
+          return (n < 10 ? '0' : '') + n;
+        }
+        function esc(s) {
+          return String(s).replace(/[&<>"]/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+          });
+        }
+
+        ZONES.forEach(function (z) {
+          total += z.projects.length;
+          var cards = z.projects
+            .map(function (p) {
+              var ext = /^https?:/.test(p.url)
+                ? ' target="_blank" rel="noopener"'
+                : '';
+              return (
+                '<a class="card" href="' +
+                esc(p.url) +
+                '"' +
+                ext +
+                '>' +
+                '<span class="id"><span>PROJETO ' +
+                pad(p.id) +
+                '</span><em>●</em></span>' +
+                '<h3>' +
+                esc(p.name) +
+                (p.meta
+                  ? '<span class="meta">' + esc(p.meta) + '</span>'
+                  : '') +
+                '</h3>' +
+                '<span class="go">Abrir projeto</span></a>'
+              );
+            })
+            .join('');
+          var n = z.projects.length;
+          root.insertAdjacentHTML(
+            'beforeend',
+            '<section class="zone"><div class="zone-head"><h2>' +
+              esc(z.name) +
+              '</h2><span class="rule"></span>' +
+              '<span class="count">' +
+              n +
+              (n === 1 ? ' projeto' : ' projetos') +
+              '</span></div>' +
+              '<div class="grid">' +
+              cards +
+              '</div></section>',
+          );
+        });
+        document.getElementById('n-proj').textContent = total;
+        document.getElementById('n-cat').textContent = ZONES.length;
+
+        root.addEventListener('pointermove', function (e) {
+          var c = e.target.closest && e.target.closest('.card');
+          if (!c) return;
+          var r = c.getBoundingClientRect();
+          c.style.setProperty('--mx', e.clientX - r.left + 'px');
+          c.style.setProperty('--my', e.clientY - r.top + 'px');
+        });
+
+        /* rede de pontos ao fundo */
+        var cv = document.getElementById('net'),
+          ctx = cv.getContext('2d');
+        var reduce =
+          window.matchMedia &&
+          matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var W,
+          H,
+          dpr,
+          pts = [],
+          mouse = { x: -999, y: -999 };
+        function size() {
+          dpr = Math.min(window.devicePixelRatio || 1, 2);
+          W = cv.clientWidth;
+          H = cv.clientHeight;
+          cv.width = W * dpr;
+          cv.height = H * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          var count = Math.round(Math.min(90, Math.max(28, (W * H) / 16000)));
+          pts = [];
+          for (var i = 0; i < count; i++)
+            pts.push({
+              x: Math.random() * W,
+              y: Math.random() * H,
+              vx: (Math.random() - 0.5) * 0.28,
+              vy: (Math.random() - 0.5) * 0.28,
+              hot: Math.random() < 0.08,
+            });
+        }
+        function frame() {
+          ctx.clearRect(0, 0, W, H);
+          var i, j, a, b, dx, dy, d;
+          for (i = 0; i < pts.length; i++) {
+            a = pts[i];
+            if (!reduce) {
+              a.x += a.vx;
+              a.y += a.vy;
+              if (a.x < 0 || a.x > W) a.vx *= -1;
+              if (a.y < 0 || a.y > H) a.vy *= -1;
+            }
+            for (j = i + 1; j < pts.length; j++) {
+              b = pts[j];
+              dx = a.x - b.x;
+              dy = a.y - b.y;
+              d = dx * dx + dy * dy;
+              if (d < 14400) {
+                ctx.strokeStyle =
+                  'rgba(56,160,255,' + 0.22 * (1 - d / 14400) + ')';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+              }
+            }
+            dx = a.x - mouse.x;
+            dy = a.y - mouse.y;
+            d = dx * dx + dy * dy;
+            if (d < 19600) {
+              ctx.strokeStyle =
+                'rgba(56,225,255,' + 0.5 * (1 - d / 19600) + ')';
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(mouse.x, mouse.y);
+              ctx.stroke();
+            }
+            ctx.fillStyle = a.hot ? '#ff5a36' : '#38e1ff';
+            ctx.globalAlpha = a.hot ? 0.9 : 0.65;
+            ctx.beginPath();
+            ctx.arc(a.x, a.y, a.hot ? 2.4 : 1.5, 0, 6.2832);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+          }
+          if (!reduce) requestAnimationFrame(frame);
+        }
+        window.addEventListener('pointermove', function (e) {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+        });
+        window.addEventListener('resize', function () {
+          size();
+          if (reduce) frame();
+        });
+        size();
+        frame();
+      })();
+    </script>
+  </body>
+</html>
